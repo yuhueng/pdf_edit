@@ -1,5 +1,7 @@
 # YH-PDFEdit
 
+**Live demo:** <https://pdf-edit-jet.vercel.app/>
+
 An all-in-one PDF editor, merger and utility suite that runs entirely on your device. It provides a client-side workspace for merging, organizing, splitting, editing, and signing PDF files with zero server uploads.
 
 > **Status:** v1.0. All local organizer, splitter, canvas editor, signature vault, Speed & Stress Lab, and offline PWA features are implemented. Existing PDF text can be replaced in place.
