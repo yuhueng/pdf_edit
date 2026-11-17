@@ -1,0 +1,40 @@
+# --- Secrets ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+secrets/
+credentials.json
+
+# --- Dependencies / build ---
+node_modules/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+dist/
+build/
+out/
+coverage/
+*.egg-info/
+
+# --- Logs / temp ---
+*.log
+*.tmp
+.cache/
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
+
+
+# --- Build artifacts ---
+dev-dist/
+*.tsbuildinfo

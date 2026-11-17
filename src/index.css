@@ -1,0 +1,403 @@
+@import "tailwindcss";
+@import "@fontsource/instrument-sans/400.css";
+@import "@fontsource/instrument-sans/500.css";
+@import "@fontsource/instrument-sans/600.css";
+@import "@fontsource/instrument-serif/400.css";
+@import "@fontsource/instrument-serif/400-italic.css";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/dancing-script/400.css";
+@import "@fontsource/great-vibes/400.css";
+@import "@fontsource/caveat/400.css";
+
+/*
+ * Design tokens. Every colour, size, radius, shadow and duration used by the UI comes from here.
+ * The same variables are exposed to Tailwind in @theme, so utilities like bg-surface or text-text-muted use them.
+ */
+@theme {
+  /* Surfaces */
+  --color-bg: #f6f5f1;
+  --color-surface: #ffffff;
+  --color-surface-sunken: #eceae3;
+  --color-surface-muted: #f6f5f1;
+
+  /* Text */
+  --color-text: #1b1b19;
+  --color-text-secondary: #55544e;
+  --color-text-muted: #6b6a63;
+  --color-text-disabled: #a3a198;
+  --color-text-on-accent: #ffffff;
+
+  /* Lines */
+  --color-border: #e4e2da;
+  --color-divider: #efede7;
+  --color-border-strong: #8a887f;
+  --color-border-dashed: #b9b6aa;
+  --color-border-hover: #d6d3c9;
+
+  /* Accent (forest green) */
+  --color-accent: #1f5c4a;
+  --color-accent-hover: #194d3e;
+  --color-accent-pressed: #163f33;
+  --color-accent-tint: #e6efea;
+  --color-accent-tint-2: #d3e3da;
+
+  /* Status */
+  --color-success: #2e7d4f;
+  --color-success-tint: #e5f2ea;
+  --color-warning: #9a5b00;
+  --color-warning-tint: #fbf0dc;
+  --color-danger: #b42318;
+  --color-danger-hover: #912018;
+  --color-danger-tint: #fbeae8;
+  --color-info: #1f5c8a;
+  --color-info-tint: #e5eef6;
+
+  /* Thumbnail placeholder */
+  --color-thumb-line: #eae8e1;
+  --color-thumb-heading: #d9d6cc;
+
+  /* Warm the default greys so any utility that still uses them stays on-palette */
+  --color-gray-50: #f6f5f1;
+  --color-gray-100: #eceae3;
+  --color-gray-200: #e4e2da;
+  --color-gray-300: #c9c6bb;
+  --color-gray-400: #a3a198;
+  --color-gray-500: #6b6a63;
+  --color-gray-600: #55544e;
+  --color-gray-700: #3f3e39;
+  --color-gray-800: #2a2a27;
+  --color-gray-900: #1b1b19;
+
+  /* Typography */
+  --font-display: "Instrument Serif", Georgia, "Times New Roman", serif;
+  --font-sans: "Instrument Sans", -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+
+  /* Radius */
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
+  --radius-pill: 999px;
+
+  /* Elevation */
+  --shadow-1: 0 1px 2px rgba(27, 27, 25, 0.06);
+  --shadow-2: 0 2px 8px rgba(27, 27, 25, 0.06), 0 1px 2px rgba(27, 27, 25, 0.04);
+  --shadow-3: 0 12px 32px rgba(27, 27, 25, 0.12), 0 2px 6px rgba(27, 27, 25, 0.06);
+  --shadow-focus: 0 0 0 3px #e6efea, 0 0 0 1px #1f5c4a;
+
+  /* Motion */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-enter: cubic-bezier(0, 0, 0, 1);
+  --ease-exit: cubic-bezier(0.3, 0, 1, 1);
+
+  /* Legacy names, kept so screens not yet moved to the new tokens stay on-palette */
+  --color-ink: #1b1b19;
+  --color-ink-soft: #55544e;
+  --color-line: #e4e2da;
+  --color-accent-soft: #e6efea;
+  --color-ok: #1f5c4a;
+  --color-ok-hover: #194d3e;
+  --color-danger-soft: #fbeae8;
+}
+
+:root {
+  --dur-instant: 80ms;
+  --dur-fast: 150ms;
+  --dur-base: 200ms;
+  --dur-slow: 300ms;
+  --dur-slower: 400ms;
+  --content-max: 2040px; /* 1.5 x the old 1360px; every tool uses it */
+  --header-h: 72px;
+  --header-h-mobile: 56px;
+  --bottom-bar-h: 56px;
+  --z-sticky: 10;
+  --z-header: 20;
+  --z-dropdown: 30;
+  --z-sheet: 40;
+  --z-dialog: 50;
+  --z-toast: 60;
+}
+
+html {
+  scroll-padding-top: calc(var(--header-h) + 72px);
+}
+/* Edit on a phone, full screen: the tab bar goes; the app header (help, Clear all) stays. */
+html[data-immersive='true'] {
+  --bottom-bar-h: 0px;
+}
+html[data-immersive='true'] [data-chrome] {
+  display: none;
+}
+/* Below the desktop layout a sticky action bar (and the tab bar on phones) sits at the bottom: keep focus and scrollIntoView clear of it. */
+@media (max-width: 1023px) {
+  html {
+    scroll-padding-bottom: calc(var(--bottom-bar-h) + 96px);
+  }
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 21px;
+  color: var(--color-text);
+  background: var(--color-bg);
+  font-variant-numeric: normal;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Phones: slightly smaller type; the 44px touch rule is relaxed to 40px on request. */
+@media (max-width: 639px) {
+  body {
+    font-size: 13px;
+    line-height: 19px;
+  }
+}
+
+/* Never above the guide's three weights: 400 regular, 500 emphasis, 600 headings. */
+h1,
+h2,
+h3,
+strong,
+b {
+  font-weight: 600;
+}
+
+/* Numbers that change or are compared line up. */
+.tabular,
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* One focus treatment for every interactive element (WCAG 2.4.7): a 3px tint ring plus a 1px accent line. */
+:where(button, a, input, select, textarea, summary, [tabindex], [role="button"]):focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
+
+/* ---- Motion ---- */
+@keyframes yh-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes yh-shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+@keyframes yh-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes yh-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes yh-pop {
+  0% {
+    transform: scale(0.6);
+  }
+  60% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes yh-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes yh-dialog-in {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes yh-sheet-in {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes yh-indeterminate {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(340%);
+  }
+}
+
+.yh-spin {
+  animation: yh-spin 700ms linear infinite;
+}
+.yh-skeleton {
+  background: linear-gradient(90deg, #f6f5f1 0%, #efede7 50%, #f6f5f1 100%);
+  background-size: 200px 100%;
+  background-repeat: no-repeat;
+  background-color: #f6f5f1;
+  animation: yh-shimmer 1.2s linear infinite;
+}
+.yh-fade-up {
+  /* "backwards", not "both": a lingering transform would make this panel the containing block of every fixed bar inside it. */
+  animation: yh-fade-up var(--dur-slow) var(--ease-enter) backwards;
+}
+.yh-fade-in {
+  animation: yh-fade-in var(--dur-base) var(--ease-enter) both;
+}
+.yh-pop {
+  animation: yh-pop var(--dur-base) var(--ease-enter) both;
+}
+
+/* ---- Dialogs and sheets (native <dialog>) ---- */
+dialog.yh-dialog {
+  margin: auto;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-2xl);
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: var(--shadow-3);
+  width: min(440px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+}
+dialog.yh-dialog[open] {
+  animation: yh-dialog-in var(--dur-base) var(--ease-enter) both;
+}
+dialog.yh-dialog::backdrop {
+  background: rgba(27, 27, 25, 0.32);
+  animation: yh-fade-in var(--dur-base) var(--ease-enter) both;
+}
+dialog.yh-dialog-wide {
+  width: min(880px, calc(100vw - 32px));
+}
+dialog.yh-dialog-form {
+  width: min(560px, calc(100vw - 32px));
+}
+@media (max-width: 639px) {
+  /* On phones dialogs become bottom sheets. */
+  dialog.yh-dialog {
+    margin: auto 0 0 0;
+    width: 100%;
+    max-width: 100%;
+    max-height: 90dvh;
+    border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+  }
+  dialog.yh-dialog[open] {
+    animation: yh-sheet-in var(--dur-slow) var(--ease-enter) both;
+  }
+}
+
+/* Landing page: paper grain, a staggered rise for the hero, and a stack of sheets that fans out once. */
+.yh-landing {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.1 0 0 0 0 0.09 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+@keyframes yh-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+.yh-rise {
+  animation: yh-rise 700ms var(--ease-enter) both;
+  animation-delay: calc(var(--d, 0) * 110ms + 80ms);
+}
+@keyframes yh-fan {
+  from {
+    opacity: 0;
+    transform: translateY(24px) rotate(0deg);
+  }
+}
+.yh-stack {
+  --spread: 12px;
+}
+@media (min-width: 640px) {
+  .yh-stack {
+    --spread: 26px;
+  }
+}
+.yh-sheet {
+  transform-origin: 50% 100%;
+  transform: translate(calc((var(--i) - 2) * var(--spread)), calc((var(--i) - 2) * -10px)) rotate(calc((var(--i) - 2) * 5deg));
+  animation: yh-fan 900ms var(--ease-enter) both;
+  animation-delay: calc(300ms + var(--i) * 140ms);
+  transition: transform 400ms var(--ease-standard);
+}
+.yh-stack:hover .yh-sheet {
+  transform: translate(calc((var(--i) - 2) * var(--spread) * 1.5), calc((var(--i) - 2) * -14px)) rotate(calc((var(--i) - 2) * 8deg));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  /* Spinners show that work is still happening, so they keep turning, slowly. */
+  .yh-spin {
+    animation-duration: 1400ms !important;
+    animation-iteration-count: infinite !important;
+  }
+  .yh-skeleton {
+    animation: none !important;
+  }
+}
+
+/* Range slider: 4px track with the filled part in the accent colour, 16px white thumb. */
+input[type='range'].yh-range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(to right, var(--color-accent) var(--fill, 50%), var(--color-surface-sunken) var(--fill, 50%));
+  cursor: pointer;
+}
+input[type='range'].yh-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1px solid var(--color-border-strong);
+  box-shadow: var(--shadow-1);
+}
+input[type='range'].yh-range::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1px solid var(--color-border-strong);
+  box-shadow: var(--shadow-1);
+}
